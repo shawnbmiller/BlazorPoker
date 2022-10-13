@@ -71,12 +71,12 @@
     private bool HoldCard3 = false;
     private bool HoldCard4 = false;
     private bool HoldCard5 = false;
+    
+    static readonly string[] suits = { "clubs", "diamonds", "hearts", "spades" };
+    static readonly string[] cardValues = { "joker", "ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king" };
 
     private async Task DealCards()
     {
-        var suits = new string[] { "clubs", "diamonds", "hearts", "spades" };
-        var cardValues = new string[] { "joker", "ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king" };
-
         var cardDeck = new List<Card>();
         for (CardSuit suit = CardSuit.clubs; suit <= CardSuit.spades; suit++)
         {
