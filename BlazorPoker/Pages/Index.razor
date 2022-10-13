@@ -1,0 +1,182 @@
+﻿@page "/"
+@inject IJSRuntime Js
+@using BlazorPoker.Poker
+
+<PageTitle>Index</PageTitle>
+<style>
+    body{
+        background-color: mediumblue;
+    }
+    .cardButton{
+        background: none;
+        border: none
+    }
+</style>
+
+<audio @ref="Audio">
+    <source src="sounds/ding.ogg" type="audio/wav"/>
+    Your browser does not support the audio element.
+</audio>
+
+<div style="display:grid;grid-template-columns:repeat(5, 1fr);">
+    <div>
+        <div style="visibility:@(HoldCard1 ? "visible" : "hidden")">HOLD</div>
+        <button @onclick="() => ToggleHoldCard(1)" class="cardButton">
+            <img width="200" src="@CardSource1" />
+        </button>
+    </div>
+
+
+    <div>
+        <div style="visibility:@(HoldCard2 ? "visible" : "hidden")">HOLD</div>
+        <button @onclick="() => ToggleHoldCard(2)" class="cardButton">
+            <img width="200" src="@CardSource2" />
+        </button>
+    </div>
+
+    <div>
+        <div style="visibility:@(HoldCard3 ? "visible" : "hidden")">HOLD</div>
+        <button @onclick="() => ToggleHoldCard(3)" class="cardButton">
+            <img width="200" src="@CardSource3" />
+        </button>
+    </div>
+
+    <div>
+        <div style="visibility:@(HoldCard4 ? "visible" : "hidden")">HOLD</div>
+        <button @onclick="() => ToggleHoldCard(4)" class="cardButton">
+            <img width="200" src="@CardSource4" />
+        </button>
+    </div>
+
+    <div>
+        <div style="visibility:@(HoldCard5 ? "visible" : "hidden")">HOLD</div>
+        <button @onclick="() => ToggleHoldCard(5)" class="cardButton">
+            <img width="200" src="@CardSource5" />
+        </button>
+    </div>
+</div>
+
+<div>
+    <button @onclick="DealCards">Deal</button>
+    
+</div>
+
+@code{
+
+    private static string faceDownCardSource = "images/cards/backs/red.svg";
+
+    private string? CardSource1 = faceDownCardSource;
+    private string? CardSource2 = faceDownCardSource;
+    private string? CardSource3 = faceDownCardSource;
+    private string? CardSource4 = faceDownCardSource;
+    private string? CardSource5 = faceDownCardSource;
+
+    private bool HoldCard1 = false;
+    private bool HoldCard2 = false;
+    private bool HoldCard3 = false;
+    private bool HoldCard4 = false;
+    private bool HoldCard5 = false;
+
+    bool IsPlaying { get; set; }
+    private bool DealCardSound { get; set; }
+    private DotNetObjectReference<Index> index;
+    ElementReference Audio { get; set; }
+
+    private async Task DealCards()
+    {
+        var suits = new string[] { "clubs", "diamonds", "hearts", "spades" };
+        var cardValues = new string[] { "joker", "ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king" };
+
+        var cardDeck = new List<Card>();
+        for (CardSuit suit = CardSuit.clubs; suit <= CardSuit.spades; suit++)
+        {
+            for (CardFace face = CardFace.ace; face <= CardFace.king; face++)
+            {
+                cardDeck.Add(new Card(){Suit = (CardSuit)suit, Face = face});
+            }
+        }
+
+        var rng = new Random();
+
+        var card1 = cardDeck[rng.Next(cardDeck.Count)];
+        cardDeck.Remove(card1);
+        CardSource1 = $"images/cards/fronts/{suits[(int)card1.Suit]}_{cardValues[(int)card1.Face]}.svg";
+        await PlayAudio();
+        StateHasChanged();
+        await Task.Delay(500);
+
+        var card2 = cardDeck[rng.Next(cardDeck.Count)];
+        cardDeck.Remove(card2);
+        CardSource2 = $"images/cards/fronts/{suits[(int)card2.Suit]}_{cardValues[(int)card2.Face]}.svg";
+        await PlayAudio();
+        StateHasChanged();
+        await Task.Delay(500);
+
+
+        var card3 = cardDeck[rng.Next(cardDeck.Count)];
+        cardDeck.Remove(card3);
+        CardSource3 = $"images/cards/fronts/{suits[(int)card3.Suit]}_{cardValues[(int)card3.Face]}.svg";
+        await PlayAudio();
+        StateHasChanged();
+        await Task.Delay(500);
+
+
+        var card4 = cardDeck[rng.Next(cardDeck.Count)];
+        cardDeck.Remove(card4);
+        CardSource4 = $"images/cards/fronts/{suits[(int)card4.Suit]}_{cardValues[(int)card4.Face]}.svg";
+        await PlayAudio();
+        StateHasChanged();
+        await Task.Delay(500);
+
+
+        var card5 = cardDeck[rng.Next(cardDeck.Count)];
+        cardDeck.Remove(card5);
+        CardSource5 = $"images/cards/fronts/{suits[(int)card5.Suit]}_{cardValues[(int)card5.Face]}.svg";
+        await PlayAudio();
+        StateHasChanged();
+    }
+
+    private void DealCard1(){
+
+    }
+
+    private void ToggleHoldCard(int cardIndex)
+    {
+        switch(cardIndex){
+            case 1:
+                HoldCard1 = !HoldCard1;
+                break;
+            case 2:
+                HoldCard2 = !HoldCard2;
+                break;
+            case 3:
+                HoldCard3 = !HoldCard3;
+                break;
+            case 4:
+                HoldCard4 = !HoldCard4;
+                break;
+            case 5:
+                HoldCard5 = !HoldCard5;
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+    private async Task PlayAudio()
+    {
+        await Js.InvokeVoidAsync("playSound");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Js.InvokeVoidAsync("initAudio");
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+}
