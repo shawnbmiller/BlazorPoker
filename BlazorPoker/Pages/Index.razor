@@ -72,11 +72,6 @@
     private bool HoldCard4 = false;
     private bool HoldCard5 = false;
 
-    bool IsPlaying { get; set; }
-    private bool DealCardSound { get; set; }
-    private DotNetObjectReference<Index> index;
-    ElementReference Audio { get; set; }
-
     private async Task DealCards()
     {
         var suits = new string[] { "clubs", "diamonds", "hearts", "spades" };
