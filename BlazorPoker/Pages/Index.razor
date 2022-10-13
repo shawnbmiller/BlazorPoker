@@ -16,7 +16,7 @@
 <div style="display:grid;grid-template-columns:repeat(5, 1fr);">
     <div>
         <div style="visibility:@(HoldCard1 ? "visible" : "hidden")">HOLD</div>
-        <button @onclick="() => ToggleHoldCard(1)" class="cardButton">
+        <button @onclick="() => HoldCard1 = !HoldCard1" class="cardButton">
             <img width="200" src="@CardSource1" />
         </button>
     </div>
@@ -24,28 +24,28 @@
 
     <div>
         <div style="visibility:@(HoldCard2 ? "visible" : "hidden")">HOLD</div>
-        <button @onclick="() => ToggleHoldCard(2)" class="cardButton">
+        <button @onclick="() => HoldCard2 = !HoldCard2" class="cardButton">
             <img width="200" src="@CardSource2" />
         </button>
     </div>
 
     <div>
         <div style="visibility:@(HoldCard3 ? "visible" : "hidden")">HOLD</div>
-        <button @onclick="() => ToggleHoldCard(3)" class="cardButton">
+        <button @onclick="() => HoldCard3 = !HoldCard3" class="cardButton">
             <img width="200" src="@CardSource3" />
         </button>
     </div>
 
     <div>
         <div style="visibility:@(HoldCard4 ? "visible" : "hidden")">HOLD</div>
-        <button @onclick="() => ToggleHoldCard(4)" class="cardButton">
+        <button @onclick="() => HoldCard4 = !HoldCard4" class="cardButton">
             <img width="200" src="@CardSource4" />
         </button>
     </div>
 
     <div>
         <div style="visibility:@(HoldCard5 ? "visible" : "hidden")">HOLD</div>
-        <button @onclick="() => ToggleHoldCard(5)" class="cardButton">
+        <button @onclick="() => HoldCard5 = !HoldCard5" class="cardButton">
             <img width="200" src="@CardSource5" />
         </button>
     </div>
@@ -125,35 +125,6 @@
         await PlayAudio();
         StateHasChanged();
     }
-
-    private void DealCard1(){
-
-    }
-
-    private void ToggleHoldCard(int cardIndex)
-    {
-        switch(cardIndex){
-            case 1:
-                HoldCard1 = !HoldCard1;
-                break;
-            case 2:
-                HoldCard2 = !HoldCard2;
-                break;
-            case 3:
-                HoldCard3 = !HoldCard3;
-                break;
-            case 4:
-                HoldCard4 = !HoldCard4;
-                break;
-            case 5:
-                HoldCard5 = !HoldCard5;
-                break;
-            default:
-                break;
-        }
-    }
-
-
 
     private async Task PlayAudio()
     {
